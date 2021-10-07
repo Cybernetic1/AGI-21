@@ -77,6 +77,11 @@
 
 \newcommand{\witness}{\scalebox{0.6}{$\blacksquare$}}
 
+\newcommand{\circA}{\large \textcircled{\small{A}} \,}
+\newcommand{\circB}{\large \textcircled{\small{B}} \,}
+\newcommand{\circC}{\large \textcircled{\small{C}} \,}
+\newcommand{\circD}{\large \textcircled{\small{D}} \,}
+
 \newcommand{\underdash}[1]{%
 	\tikz[baseline=(toUnderline.base)]{
 		\node[inner sep=1pt,outer sep=10pt] (toUnderline) {#1};
@@ -95,8 +100,8 @@
 
 \overfullrule=0mm
 
-\newsavebox{\MyName}
-\savebox{\MyName}{\includegraphics[scale=0.6]{YKY.png}}
+% \newsavebox{\MyName}
+% \savebox{\MyName}{\includegraphics[scale=0.6]{YKY.png}}
 
 \title{AGI via Combining Logic with Deep Learning}
 \author{
@@ -168,7 +173,7 @@ Seeing logical types as topological spaces is also the origin of Voevodsky's \te
 \begin{figure}
 \centering
 \includegraphics[scale=0.5]{figure-1.png}
-\caption{(a) pair of pants (b) point clouds}
+\caption{\circA pair of pants. \circB point clouds}
 \label{fig:1}
 \end{figure}
 
@@ -242,12 +247,12 @@ Currently, the most mathematically advanced and satisfactory description of logi
 
 The Curry-Howard isomorphism identifies \textit{propositional} intuitionistic logic with type theory.  As such, the arrow $\rightarrow$ in type theory is ``used up'' (it corresponds to the implication arrow $\Rightarrow$ in intuitionistic logic).  However, predicates are also a kind of functions (arrows), so how could we accomodate predicates in type theory such that Curry-Howard continues to hold?  This is the idea behind Martin L\"{o}f's \textbf{dependent type theory}.
 
-In dependent type theory, a predicate $P(\cdot)$ is a \textbf{type constructor} (\cite{Sorensen2006} \S8.7) taking an element $a$ of one type to create a new type $P(a)$.  For example, each element $a \in \{ \text{John, Socrates, Kermit} \}$ creates a new type Human$(a)$, and thus $\mathrm{Human}$ is a \textbf{family} of types or a \textbf{dependent type}.  See Figure (\ref{fig:dependent-type}b).
+In dependent type theory, a predicate $P(\cdot)$ is a \textbf{type constructor} (\cite{Sorensen2006} \S8.7) taking an element $a$ of one type to create a new type $P(a)$.  For example, each element $a \in \{ \text{John, Socrates, Kermit} \}$ creates a new type Human$(a)$, and thus $\mathrm{Human}$ is a \textbf{family} of types or a \textbf{dependent type}.  See Figure (\ref{fig:dependent-type}).
 
 \begin{figure}
 \centering
-\includegraphics[scale=0.5]{figure-2.png}
-\caption{(a) symmetric neural network (b) the predicate ``Human'' as a fibration}
+\includegraphics[scale=0.5]{dependent-type.png}
+\caption{The predicate ``Human'' as a fibration}
 \label{fig:dependent-type}
 \end{figure}
 
@@ -314,7 +319,14 @@ Their paper specialized the theorem to the case that every symmetric multivariat
 \label{symmetric-functions}
 f(x_1, ..., x_n) = \rho(\; \phi(x_1) + ... + \phi(x_n) \;)
 \end{equation}
-This leads to the implementation using neural networks as in Figure (\ref{fig:dependent-type}a)
+This leads to the implementation using neural networks as in Figure (\ref{fig:symmetric}a)
+
+\begin{figure}
+	\centering
+	\includegraphics[scale=0.5]{symmetric.png}
+	\caption{(a) symmetric neural network (b) permutation invariant vs. equivariant}
+	\label{fig:symmetric}
+\end{figure}
 
 And this can be easily implemented with just a few lines of Tensorflow, see \S\ref{sec:experiment}.  The idea of using symmetric neural networks to process logical / relational data has already been explored by one of Google's research teams in 2017, which they called RN (Relational Networks) \cite{Santoro2017} \cite{Battaglia2018}.  Their results further confirm the viability of this idea.
 
@@ -333,10 +345,7 @@ In other words, each Transformer layer takes $N$ inputs and produces $N$ equivar
 
 \textbf{Proof that equi-variance $\Leftrightarrow$ symmetric} (for an $N$-input $N$-output set function): $\Leftarrow$: Suppose we have constructed $n$ symmetric functions $f_1, ..., f_N$, satisfying $\forall \sigma. \; \vec{f}(\vec{x}) = \vec{f}(\sigma \vec{x})$, with $\sigma$ taking values in the symmetric group $\mathfrak{S}_N$.  We can re-state the condition as $\forall \sigma. \; \sigma \vec{f}(\vec{x}) = \vec{f}(\sigma \vec{x})$ by re-naming the functions, because $\{ f_i \}$ is a set.  $\Rightarrow$: If we have $N$ equi-variant functions $t_1, ..., t_N$, satisfying $\forall \sigma. \; \sigma \vec{t}(\vec{x}) = \vec{t}(\sigma \vec{x})$, we can also re-state the condition as $\forall \sigma. \; \sigma^{-1} \sigma \; \vec{t}(\vec{x}) = \vec{t}(\sigma \vec{x})$ by re-naming elements in the set $\{ t_i \}. \quad \blacksquare$
 
-This is illustrated by the following diagram (for $N = 3$):
-\begin{equation}
-\vcenter{\hbox{\includegraphics[scale=0.4]{symmetry-of-the-Transformer.png}}}
-\end{equation}
+This is illustrated in Figure (\ref{fig:symmetric}b) (for $N = 3$).
 
 A self-Attention layer can be implemented by this formula (which appears in numerous tutorials):
 \begin{equation}
@@ -344,14 +353,17 @@ A self-Attention layer can be implemented by this formula (which appears in nume
 Z = \sum \mathrm{softmax}(\frac{1}{\sqrt{d_k}} Q \cdot K^T) V
 \end{equation}
 where $Q. K, V$ are \textit{linear} transformations of the inputs $X_i$ by multiplying (learned) matrices $W^Q, W^K, W^V$ respectively.  We hypothesize that (\ref{eqn:self-attention}) is just a \textit{general} form of equivariant functions, ie, it represents an arbitrary non-linear transformation of the input vectors $X_i$ to the output vector $Z$, without any constraints other than equivariance.  Below is a simplified diagram of a single self-Attention layer:
-\begin{equation}
-\vcenter{\hbox{\includegraphics[scale=0.5]{attention-as-predicate.png}}}
-\end{equation}
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{embedding.png}
+\caption{\circA Why positional encoding does not interfere with word embedding. \circB How a logic term ``Socrates'' is copied from one position to another. \circC How predicates may be formed in self-attention. \circD Deformation of embedding spaces.}
+\label{fig:embedding}
+\end{figure}
+
 The output is a new proposition that depends on the input objects, and thus, functions as a \textbf{predicate}.
-However, this representation of predicates-within-proposition is not efficient for logic inference.  We may visualize the non-linear (due to the softmax in $Z$) deformation of the input and output vector-embedding spaces as follows:
-\begin{equation}
-\vcenter{\hbox{\includegraphics[scale=0.6]{predicate-deformation.png}}}
-\end{equation}
+However, this representation of predicates-within-proposition is not efficient for logic inference.  We may visualize the non-linear (due to the softmax in $Z$) deformation of the input and output vector-embedding spaces as in Figure (\ref{fig:embedding}).
+
 The problem is that a \textbf{universally quantified} formula such as $\forall x. P(x) \Rightarrow Q(x)$ requires mapping a source region to a target region in embedding spaces.  This kind of mapping shapes are difficult or slow to learn because it requires many pairs of input-output data points.  But BERT/GPT is famous for being able to make \textbf{few-shot generalizations}.  Thus we conjecture that in BERT/GPT the logical proposition is not just one equivariant unit but is \textbf{decomposed} into several units (eg. ``I love you'' at the input stage is decomposed into 3 vector units: ``I'', ``love'', and ``you'').  In other words, BERT/GPT performs logic inference / derivations on the \textbf{syntactic} level, ie, via \textbf{symbolic} manipulations.
 
 In \textbf{Multi-Head Attention}, the intermediate computations are duplicated multiple (eg, $M = 8$) times, each with their own weight matrices.  From the logic point of view, this amounts to duplicating $M$ logic rules per output.  But since the next layer still expects $N$ inputs, the $M$ outputs are combined into one, before the next stage.  Thus, from the logic point of view this merely increased the parameters \textit{within} a single logic rule, and seems not significant to increase the power of the logic rule-base.  Indeed, experimental results seem to confirm that multi-head attention is not particularly gainful towards performance.
@@ -363,9 +375,13 @@ A comment is in order here, about the choice of the word ``head''.  In logic pro
 In machine learning, ``No Free Lunch'' \cite{Wolpert1997} \cite{Alpaydin2020} refers to the fact that accelerating the search for a solution by ignoring one part of the search space (known as ''inductive bias'' \cite{Alpaydin2020}) is just as good as ignoring another part, if the solutions are believed to be evenly distributed in those regions.  For example, the symmetry proposed here reduces the search space by a factor of $1/n!$ where $n$ is the number of propositions in working memory.
 
 The following conceptual diagram of the algorithmic search space illustrates the possibility that there might exist some form of logic that is drastically different from the symbolic logic currently known to humans:
-\begin{equation}
-\vcenter{\hbox{\includegraphics[scale=0.45]{no-free-lunch.png}}}
-\end{equation}
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.45]{no-free-lunch.png}
+\caption{Inductive bias and the search for AGI.}
+\end{figure}
+
 but there is no efficient algorithm to find them (grey area is much larger than shaded area).  The permutation symmetry proposed in this paper forces our logic to be decomposable into \textbf{propositions}.  Such a logical form allows a mental state to be enumerated as a list of sentences (propositions), same as the ``linear'' structure of human \textbf{languages}.  If the AGI knowledge representation is linear (in the sequential sense) and symbolic, then it would not be far from our formulation -- all these logics belong to one big family.
 
 But could there be drastically different logics?  One observes that pictures and music are not easily described by words, indeed they are 2-dimensional structures.  This suggests that the brain may use \textbf{multi-dimensional} arrays of features to represent the world.  Such a ``logic'' would be very different from sequential logic and it would be interesting and fruitful to analyze the relation between them.
@@ -380,9 +396,13 @@ The state of the game is represented as a set of 9 propositions, where all propo
 In comparison, the game state of traditional RL algorithms (eg. AlphaGo \cite{Silver2016} \cite{Silver2017} \cite{Pumperla2019}) usually is represented as a ``chessboard'' vector (eg. $3 \times 3$ in Tic-Tac-Toe, $8 \times 8$ in Chess, $19 \times 19 = 361$ in Go \footnote{In AlphaGo and AlphaZero, the algorithm makes use of several auxiliary ``feature planes'' that are also chessboard vectors, to indicate which stones have ``liberty'', ``ko'', etc.}).  This state vector is the same constant length even if there are very few pieces on the chessboard.  Our logic-based representation may offer some advantages over the board-vector representation, and likely induces a different ``way of reasoning'' about the game.
 
 In our Tic-Tac-Toe experiment, learning led to initial improvements in game play but failed to achieve the optimal score in general.  We find that this failure is also shared by the fully-connected NN (neural network), and this is likely because the policy gradient algorithm itself does not converge for Tic Tac Toe.  Below is a comparison of symmetric NN versus fully-connected NN during early training.  Disappointingly, the symmetric version does not out-perform the fully-connected version: 
-\begin{equation}
-\vcenter{\hbox{\includegraphics[scale=0.5]{comparison.png}}}
-\end{equation}
+
+\begin{figure}
+\centering
+\includegraphics[scale=0.5]{comparison.png}
+\caption{Symmetric vs. fully-connected neural network for Tic Tac Toe}
+\end{figure}
+
 We ascribe this failure to the naive policy gradient algorithm and plan to use Actor-Critic (which also allows continuous actions) in our next experiments.  We hope to show that symmetric NN is gainful for solving problems with logical structure.  In another Github experiment we explore using a symbolic logic engine to solve Tic Tac Toe \footnote{ https://github.com/Cybernetic1/GIRL } and the comparison of these two approaches may shed light on how to integrate deep learning with logic.
 
 \section{Conclusion and Future Directions}

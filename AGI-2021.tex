@@ -77,10 +77,10 @@
 
 \newcommand{\witness}{\scalebox{0.6}{$\blacksquare$}}
 
-\newcommand{\circA}{\large \textcircled{\small{A}} \,}
-\newcommand{\circB}{\large \textcircled{\small{B}} \,}
-\newcommand{\circC}{\large \textcircled{\small{C}} \,}
-\newcommand{\circD}{\large \textcircled{\small{D}} \,}
+\newcommand{\circA}{\textcircled{\scriptsize{A}} \,}
+\newcommand{\circB}{\textcircled{\scriptsize{B}} \,}
+\newcommand{\circC}{\textcircled{\scriptsize{C}} \,}
+\newcommand{\circD}{\textcircled{\scriptsize{D}} \,}
 
 \newcommand{\underdash}[1]{%
 	\tikz[baseline=(toUnderline.base)]{
@@ -133,19 +133,19 @@ deep learning, symbolic logic, logic-based AI, neural-symbolic integration, Curr
 
 Results in the present paper does not make use of category theory in any significant way (nor the Curry-Howard isomorphism, for that matter).  Its main accomplishment is to express AGI in the categorical language.  To the lay person, concepts of category theory (such as pullbacks, adjunctions, fibration, toposes, sheaves, ...) may be difficult to grasp, but they are the mathematician's ``daily bread''.  We hope that describing AGI in categorical terms will entice more mathematicians to work on this important topic.
 
-Secondly, an abstract formulation allows us to see clearly what is meant by ``the mathematical structure of logic'', without which logic is just a collection of strange rules and axioms, leaving us with a feeling that something may be ``amiss'' in our theory.
+Secondly, an abstract formulation allows us to see clearly what is meant by ``the mathematical structure of logic'', without which logic is just a collection of esoteric rules and axioms, leaving us with a feeling that something may be ``amiss'' in our theory.
 
 \subsection{The Curry-Howard Isomorphism}
 
 As the risk of sounding too elementary, we would go over some basic background knowledge, that may help those readers unfamiliar with this area of mathematics.
 
-The Curry-Howard isomorphism expresses a connection between logic \textbf{syntax} and its underlying \textbf{proof} mechanism.  Consider the mathematical declaration of a \textbf{function} $f$ with its domain and co-domain:
+The Curry-Howard isomorphism expresses a connection between logic \textbf{syntax} and its underlying \textbf{proof} mechanism.  It is fundamental to understanding categorical logic.  Consider the mathematical declaration of a \textbf{function} $f$ with its domain and co-domain:
 \begin{equation}
 f: A \rightarrow B .
 \end{equation}
 This notation comes from type theory, where $A$ and $B$ are \textbf{types} (which we can think of as sets or general spaces) and the function $f$ is an \textbf{element} in the function space $A \rightarrow B$, which is also a type.
 
-What the Curry-Howard isomorphism says is that we can regard $A \rightarrow B$ as a \textbf{logic} formula $A \Rightarrow B$ (an implication), and the function $f$ as a \textbf{proof} process that maps a proof of $A$ to a proof of $B$.
+What the Curry-Howard isomorphism says in essence is that we can regard $A \rightarrow B$ as a \textbf{logic} formula, ie. the implication $A \Rightarrow B$, and the function $f$ as a \textbf{proof} process that maps a proof of $A$ to a proof of $B$. \footnote{ Though one does not need to execute a function to prove a statement;  Merely the existence of a such a function (proof object) that type-checks is sufficient. }
 
 The following may give a clearer picture:
 \begin{equation}
@@ -160,17 +160,17 @@ Other textbooks on the Curry-Howard isomorphism include: \cite{Sorensen2006} \ci
 
 The gist of our theory is that Deep Learning provides us with neural networks (ie. non-linear functions) that serve as the proof mechanism of logic via the Curry-Howard isomorphism.  With this interpretation, we can impose the mathematical structure of logic (eg. symmetries) onto neural networks.  Such constraints serve as \textbf{inductive bias} that can accelerate learning, according to the celebrated ``No Free Lunch'' theory \cite{Wolpert1997} \cite{Alpaydin2020} \cite{Shalev-Shwartz2014}.
 
-In particular, logic propositions in a conjunction (such as $A \wedge B$) are commutative, ie. invariant under permutations, which is a ``symmetry'' of logic.  This symmetry essentially decomposes a logic ``state'' into a set of propositions, and seems to be a fundamental feature of most logics known to humans.  Imposing this symmetry on neural networks gives rise to symmetric neural networks, which can be easily implemented thanks to a separate result by other researchers.  This is discussed in \S\ref{sec:commutative-structure}.
+In particular, logic propositions in a conjunction (such as $A \wedge B$) are commutative, ie. invariant under permutations, which is a ``symmetry'' of logic and perhaps the most important one.  This symmetry decomposes a logic ``state'' into a set of propositions, and seems to be a fundamental feature of most logics known to humans.  Imposing this symmetry on neural networks gives rise to symmetric neural networks (see \S\ref{sec:commutative-structure}).
 
 We have not been clear about what the \textbf{proof witnesses} are.  In our current implementation, types are regions in vector space and witnesses are just points inside the regions.  When some propositions imply another proposition, there is a function mapping witnesses in some regions to a new witness in another region.  Thus, such spatial regions are nearly tautologous with proof witnesses (ie. points versus the regions containing them).  In other words, the ``big'' vector space is divided into many small regions representing various propositions.
 
-We should point out that the Curry-Howard isomorphism has not played a significant role in our current AGI theory.  The representation of \textbf{conditional} statements (eg. $A \Rightarrow B$) requires \textbf{function types} which are hard to represent as vectors.  So the only function type in our system is the ``main'' neural network simulating the $\vdash$ operator.  In the language of classical logic-based AI, this is similar to having  ``Horn form'' logic rules in the knowledge base, acting on \textit{atomic} propositions only.
+We should point out that the Curry-Howard isomorphism has not played a significant role in our current AGI theory.  The representation of \textbf{conditional} statements (eg. $A \Rightarrow B$) requires \textbf{function types} which are hard to represent as vectors.  So the only function type in our system is the ``main'' neural network simulating the $\vdash$ operator.  In the language of classical logic-based AI, this is similar to having  ``Horn form'' logic rules in the knowledge base, while the working memory contains \textit{atomic} propositions only.
 
-As an aside, the Curry-Howard isomorphism also establishes connections to diverse disciplines.  Whenever there is a space of elements and some operations over them, there is a chance that it has an underlying ``logic'' to it (see eg. Baez and Stay's ``Rosetta Stone'' paper: \cite{Baez2010}, also \cite{Heunen2019}).  For example, in quantum mechanics, that of Hilbert space and Hermitian operators.  Another example: in String Theory, strings and cobordisms between them.  Figure (\ref{fig:1}A) is the famous ``pair of pants'' cobordism, representing a process in time that merges two strings into one (time is read upwards).
+As an aside, the Curry-Howard isomorphism also establishes connections to diverse disciplines.  Whenever there is a space of elements and some operations over them, there is a chance that it has an underlying ``logic'' to it (see eg. Baez and Stay's ``Rosetta Stone'' paper: \cite{Baez2010}, also \cite{Heunen2019}).  For example, in quantum mechanics, that of Hilbert space and Hermitian operators.  Another example: in String Theory, strings and cobordisms between them.  For example the famous ``pair of pants'' cobordism (Fig. \ref{fig:1}A), representing a process in time that merges two strings into one (time is read upwards).
 
-Seeing logical types as topological spaces is also the origin of Voevodsky's \textbf{Homotopy Type Theory} (HoTT) \cite{Voevodsky2013}, where the \textbf{identity} of two inhabitants in a type is seen as a homotopy \textbf{path}.  HoTT may be relevant to AGI if we want the convenience of having multiple identical proofs of the same propositions -- this may help simplify the topology of types (ie. spatial regions representing propositions).
+Seeing logical types as topological spaces is also the origin of Voevodsky's \textbf{Homotopy Type Theory} (HoTT) \cite{Voevodsky2013}, where the \textbf{identity} of two inhabitants in a type is seen as a homotopy \textbf{path}.  HoTT may be relevant to AGI if we want the convenience of having multiple identical proofs of the same propositions -- this may help simplify the topology of types (ie. spatial regions representing propositions).  For example in Fig. \ref{fig:dependent-type}A, two disjoint regions can be connected by a path.
 
-\begin{figure}
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.5]{figure-1.png}
 \caption{\circA pair of pants. \circB point clouds}
@@ -247,12 +247,12 @@ Currently, the most mathematically advanced and satisfactory description of logi
 
 The Curry-Howard isomorphism identifies \textit{propositional} intuitionistic logic with type theory.  As such, the arrow $\rightarrow$ in type theory is ``used up'' (it corresponds to the implication arrow $\Rightarrow$ in intuitionistic logic).  However, predicates are also a kind of functions (arrows), so how could we accomodate predicates in type theory such that Curry-Howard continues to hold?  This is the idea behind Martin L\"{o}f's \textbf{dependent type theory}.
 
-In dependent type theory, a predicate $P(\cdot)$ is a \textbf{type constructor} (\cite{Sorensen2006} \S8.7) taking an element $a$ of one type to create a new type $P(a)$.  For example, each element $a \in \{ \text{John, Socrates, Kermit} \}$ creates a new type Human$(a)$, and thus $\mathrm{Human}$ is a \textbf{family} of types or a \textbf{dependent type}.  This is depicted in Figure (\ref{fig:dependent-type}).
+In dependent type theory, a predicate $P(\cdot)$ is a \textbf{type constructor} (\cite{Sorensen2006} \S8.7) taking an element $a$ of one type to create a new type $P(a)$.  For example, each element $a \in \{ \text{John, Socrates, Kermit} \}$ creates a new type Human$(a)$, and thus $\mathrm{Human}$ is a \textbf{family} of types or a \textbf{dependent type}.  This is depicted in Fig. \ref{fig:dependent-type}B.
 
-\begin{figure}
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.5]{dependent-type.png}
-\caption{The predicate ``Human'' as a fibration}
+\caption{\circA A path in homotopy type theory. \circB The predicate ``Human'' as a fibration}
 \label{fig:dependent-type}
 \end{figure}
 
@@ -262,7 +262,7 @@ So far, we did not make use of dependent types:  predicates are represented usin
 
 %An immediate question is:  what kind of structure does dependent type theory impose on the inference operator $\vdash$, and thus our neural network?  The answer is surprising:  almost none.  Curry-Howard isomorphism merely tells us the types (ie. spaces) in which elements reside, but it does not constrain the functions mapping between such spaces.
 
-The expressiveness of predicate logic (in one form or another) is a highly desirable feature for AGI knowledge representations.  So it seems necessary to incorporate dependent type theory into our logic.  From a categorical perspective, predicates can be regarded as \textbf{fibers} over a base set.  Fibrations capture the structure of \textbf{indexing} and \textbf{substitutions} (as shown in Figure (\ref{fig:dependent-type})).  This is the treatment given in Bart Jacob's book \cite{Jacobs1999}.  Thus category theory gives us more insight into the (predicate) structure of logic, though it is as yet unclear how to make use of this particular idea.
+The expressiveness of predicate logic (in one form or another) is a highly desirable feature for AGI knowledge representations.  So it seems necessary to incorporate dependent type theory into our logic.  From a categorical perspective, predicates can be regarded as \textbf{fibers} over a base set.  Fibrations capture the structure of \textbf{indexing} and \textbf{substitutions} (as shown in Fig. \ref{fig:dependent-type}B).  This figure is key to understanding Bart Jacob's book \cite{Jacobs1999}.  Thus category theory gives us more insight into the (predicate) structure of logic, though it is as yet unclear how to make use of this particular idea.
 %\begin{equation}
 %\label{eqn:2-levels-of-TT}
 %\vcenter{\hbox{\includegraphics[scale=0.5]{../2020/why-Martin-Lof.png}}}
@@ -306,7 +306,7 @@ One basic characteristic of (classical) logic is that the conjunction $\wedge$ i
 \end{equation}
 This remains true of probabilistic logic, where $\wedge$ and $\vee$ are unified as conditional probability tables (CPTs) of the nodes of Bayesian networks.  (Note: the commutative structure of $\wedge$ also gives rise to \textbf{monoidal categories}, that capture processes that can be executed in parallel; See \cite{Heunen2019} for an introduction.)
 
-Once we know the symmetry, the question is how to impose this symmetry on deep neural networks.  Interestingly, the answer already comes from an independent line of research (namely, PointNet \cite{Qi2017a} and Deep Sets \cite{Zaheer2017a}) that deals with visual object recognition of point clouds, eg. Figure (\ref{fig:1}B).
+Once we know the symmetry, the question is how to impose this symmetry on deep neural networks.  Interestingly, the answer already comes from an independent line of research (namely, PointNet \cite{Qi2017a} and Deep Sets \cite{Zaheer2017a}) that deals with visual object recognition of point clouds, eg. Fig. \ref{fig:1}B.
 
 In a point cloud, it does not matter the order in which the points are presented, as inputs to the classifier function.  Such a function needs to be permutation invariant to a huge number of points.  More generally, see also these recent articles on the use of geometry and symmetry in deep learning: \cite{Bronstein2021} \cite{Bronstein2021a}.
 
@@ -319,7 +319,7 @@ Their paper specialized the theorem to the case that every symmetric multivariat
 \label{symmetric-functions}
 f(x_1, ..., x_n) = \rho(\; \phi(x_1) + ... + \phi(x_n) \;)
 \end{equation}
-This leads to the implementation using neural networks as in Figure (\ref{fig:symmetric}A)
+This leads to the implementation using neural networks as in Fig. \ref{fig:symmetric}A.
 
 \begin{figure}
 	\centering
@@ -332,37 +332,36 @@ And this can be easily implemented with just a few lines of Tensorflow, see \S\r
 
 \subsection{Why BERT is a Logic}
 
-BERT (and its variants) are based on the Transformer architecture \cite{Devlin2018}, and Transformers are based solely on the Self-Attention mechanism \cite{Vaswani2017}.  In Figure (\ref{fig:self-attention}) one can verify that the Transformer is permutation-invariant (or more precisely, \textbf{equivariant}).  That is to say, for example, if input \#1 and \#2 are swapped, then output \#1 and \#2 would also be swapped.
+BERT (and its variants) are based on the Transformer architecture \cite{Devlin2018}, and Transformers are based solely on the Self-Attention mechanism \cite{Vaswani2017}.  In Fig. \ref{fig:self-attention} one can verify that the Transformer is permutation-invariant (or more precisely, \textbf{equivariant}).  That is to say, for example, if input \#1 and \#2 are swapped, then output \#1 and \#2 would also be swapped.
 
-\begin{figure}
-\centering
-\includegraphics[scale=0.25]{self-attention.png}
-\caption{Flow of operations in self-attention.  From blog article: Illustrated: Self-Attention	-- Step-by-step guide to self-attention with illustrations and code https://towardsdatascience.com/illustrated-self-attention-2d627e33b20a }
-\label{fig:self-attention}
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.25]{self-attention.png}
+	\caption{Flow of operations in self-attention.  From blog article: Illustrated: Self-Attention	-- Step-by-step guide to self-attention with illustrations and code https://towardsdatascience.com/illustrated-self-attention-2d627e33b20a }
+	\label{fig:self-attention}
 \end{figure}
 
 In other words, each Transformer layer takes $N$ inputs and produces $N$ equivariant outputs.  That is the same as saying that \textit{each} output is permutation-invariant in all its inputs.  As we explained in the last section, permutation invariance is the symmetry that characterizes a logic as having \textit{individual} propositions.
 
 \textbf{Proof that equi-variance $\Leftrightarrow$ symmetric} (for an $N$-input $N$-output set function): $\Leftarrow$: Suppose we have constructed $n$ symmetric functions $f_1, ..., f_N$, satisfying $\forall \sigma. \; \vec{f}(\vec{x}) = \vec{f}(\sigma \vec{x})$, with $\sigma$ taking values in the symmetric group $\mathfrak{S}_N$.  We can re-state the condition as $\forall \sigma. \; \sigma \vec{f}(\vec{x}) = \vec{f}(\sigma \vec{x})$ by re-naming the functions, because $\{ f_i \}$ is a set.  $\Rightarrow$: If we have $N$ equi-variant functions $t_1, ..., t_N$, satisfying $\forall \sigma. \; \sigma \vec{t}(\vec{x}) = \vec{t}(\sigma \vec{x})$, we can also re-state the condition as $\forall \sigma. \; \sigma^{-1} \sigma \; \vec{t}(\vec{x}) = \vec{t}(\sigma \vec{x})$ by re-naming elements in the set $\{ t_i \}. \quad \blacksquare$
 
-This is illustrated in Figure (\ref{fig:symmetric}B) (for $N = 3$).
+This is illustrated in Fig. \ref{fig:symmetric}B (for $N = 3$).
 
 A self-Attention layer can be implemented by this formula (which appears in numerous tutorials):
 \begin{equation}
 \label{eqn:self-attention}
 Z = \sum \mathrm{softmax}(\frac{1}{\sqrt{d_k}} Q \cdot K^T) V
 \end{equation}
-where $Q. K, V$ are \textit{linear} transformations of the inputs $X_i$ by multiplying (learned) matrices $W^Q, W^K, W^V$ respectively.  We hypothesize that (\ref{eqn:self-attention}) is just a \textit{general} form of equivariant functions, ie, it represents an arbitrary non-linear transformation of the input vectors $X_i$ to the output vector $Z$, without any constraints other than equivariance.  Below is a simplified diagram of a single self-Attention layer:
+where $Q. K, V$ are \textit{linear} transformations of the inputs $X_i$ by multiplying (learned) matrices $W^Q, W^K, W^V$ respectively.  We hypothesize that (\ref{eqn:self-attention}) is just a \textit{general} form of equivariant functions, ie, it represents an arbitrary non-linear transformation of the input vectors $X_i$ to the output vector $Z$, without any constraints other than equivariance.
 
-\begin{figure}
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.5]{embedding.png}
 \caption{\circA Why positional encoding does not interfere with word embedding. \circB How a logic term ``Socrates'' is copied from one position to another. \circC How predicates may be formed in self-attention. \circD Deformation of embedding spaces.}
 \label{fig:embedding}
 \end{figure}
 
-The output is a new proposition that depends on the input objects, and thus, functions as a \textbf{predicate}.
-However, this representation of predicates-within-proposition is not efficient for logic inference.  We may visualize the non-linear (due to the softmax in $Z$) deformation of the input and output vector-embedding spaces as in Figure (\ref{fig:embedding}D).
+Fig. \ref{fig:embedding}C is a simplified view of a single self-Attention layer.  The output is a new proposition that depends on the input objects, and thus, functions as a \textbf{predicate}.  However, this representation of predicates-within-proposition is not efficient for logic inference.  We may visualize the non-linear (due to the softmax in $Z$) deformation of the input and output vector-embedding spaces as in Fig. \ref{fig:embedding}D.
 
 The problem is that a \textbf{universally quantified} formula such as $\forall x. P(x) \Rightarrow Q(x)$ requires mapping a source region to a target region in embedding spaces.  This kind of mapping shapes are difficult or slow to learn because it requires many pairs of input-output data points.  But BERT/GPT is famous for being able to make \textbf{few-shot generalizations}.  Thus we conjecture that in BERT/GPT the logical proposition is not just one equivariant unit but is \textbf{decomposed} into several units (eg. ``I love you'' at the input stage is decomposed into 3 vector units: ``I'', ``love'', and ``you'').  In other words, BERT/GPT performs logic inference / derivations on the \textbf{syntactic} level, ie, via \textbf{symbolic} manipulations.
 
@@ -374,9 +373,9 @@ A comment is in order here, about the choice of the word ``head''.  In logic pro
 
 In machine learning, ``No Free Lunch'' \cite{Wolpert1997} \cite{Alpaydin2020} refers to the fact that accelerating the search for a solution by ignoring one part of the search space (known as ''inductive bias'' \cite{Alpaydin2020}) is just as good as ignoring another part, if the solutions are believed to be evenly distributed in those regions.  For example, the symmetry proposed here reduces the search space by a factor of $1/n!$ where $n$ is the number of propositions in working memory.
 
-The following conceptual diagram of the algorithmic search space illustrates the possibility that there might exist some form of logic that is drastically different from the symbolic logic currently known to humans (Figure (\ref{fig:inductive-bias})).
+The following conceptual diagram of the algorithmic search space illustrates the possibility that there might exist some form of logic that is drastically different from the symbolic logic currently known to humans (Fig. \ref{fig:inductive-bias}).
 
-\begin{figure}
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.45]{no-free-lunch.png}
 \caption{Inductive bias and the search for AGI.}
@@ -396,9 +395,9 @@ The state of the game is represented as a set of 9 propositions, where all propo
 
 In comparison, the game state of traditional RL algorithms (eg. AlphaGo \cite{Silver2016} \cite{Silver2017} \cite{Pumperla2019}) usually is represented as a ``chessboard'' vector (eg. $3 \times 3$ in Tic-Tac-Toe, $8 \times 8$ in Chess, $19 \times 19 = 361$ in Go \footnote{In AlphaGo and AlphaZero, the algorithm makes use of several auxiliary ``feature planes'' that are also chessboard vectors, to indicate which stones have ``liberty'', ``ko'', etc.}).  This state vector is the same constant length even if there are very few pieces on the chessboard.  Our logic-based representation may offer some advantages over the board-vector representation, and likely induces a different ``way of reasoning'' about the game.
 
-In our Tic-Tac-Toe experiment, learning led to initial improvements in game play but failed to achieve the optimal score in general.  We find that this failure is also shared by the fully-connected NN (neural network), and this is likely because the policy gradient algorithm itself does not converge for Tic Tac Toe.  Figure (\ref{fig:comparison}) is a comparison of symmetric NN versus fully-connected NN during early training.  Disappointingly, the symmetric version does not out-perform the fully-connected version.
+In our Tic-Tac-Toe experiment, learning led to initial improvements in game play but failed to achieve the optimal score in general.  We find that this failure is also shared by the fully-connected NN (neural network), and this is likely because the policy gradient algorithm itself does not converge for Tic Tac Toe.  Fig. \ref{fig:comparison} is a comparison of symmetric NN versus fully-connected NN during early training.  Disappointingly, the symmetric version does not out-perform the fully-connected version.
 
-\begin{figure}
+\begin{figure}[h]
 \centering
 \includegraphics[scale=0.5]{comparison.png}
 \caption{Symmetric vs. fully-connected neural network for Tic Tac Toe}

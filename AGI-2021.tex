@@ -164,11 +164,11 @@ In particular, logic propositions in a conjunction (such as $A \wedge B$) are co
 
 We have not been clear about what the \textbf{proof witnesses} are.  In our current implementation, types are regions in vector space and witnesses are just points inside the regions.  When some propositions imply another proposition, there is a function mapping witnesses in some regions to a new witness in another region.  Thus, such spatial regions are nearly tautologous with proof witnesses (ie. points versus the regions containing them).  In other words, the ``big'' vector space is divided into many small regions representing various propositions.
 
-We should point out that the Curry-Howard isomorphism has not played a significant role in our current AGI theory.  The representation of \textbf{conditional} statements (eg. $A \Rightarrow B$) requires \textbf{function types} which are hard to represent as vectors.  So the only function type in our system is the ``main'' neural network simulating the $\vdash$ operator.  In the language of classical logic-based AI, this is similar to having  ``Horn form'' logic rules in the knowledge base, while the working memory contains \textit{atomic} propositions only.
+We should point out that the Curry-Howard isomorphism has not played a significant role in our current AGI theory.  The representation of \textbf{conditional} statements (eg. $A \Rightarrow B$) requires \textbf{function types} which are hard to represent as vectors. \footnote{ Ben Goertzel's latest ``general theory of AGI'' \cite{Goertzel2021} addresses higher-order networks, which construct other networks as proofs of implications. }  So the only function type in our system is the ``main'' neural network simulating the $\vdash$ operator.  In the language of classical logic-based AI, this is similar to having  ``Horn form'' logic rules in the knowledge base, while the working memory contains \textit{atomic} propositions only.
 
 As an aside, the Curry-Howard isomorphism also establishes connections to diverse disciplines.  Whenever there is a space of elements and some operations over them, there is a chance that it has an underlying ``logic'' to it (see eg. Baez and Stay's ``Rosetta Stone'' paper: \cite{Baez2010}, also \cite{Heunen2019}).  For example, in quantum mechanics, that of Hilbert space and Hermitian operators.  Another example: in String Theory, strings and cobordisms between them.  For example the famous ``pair of pants'' cobordism (Fig. \ref{fig:1}A), representing a process in time that merges two strings into one (time is read upwards).
 
-Seeing logical types as topological spaces is also the origin of Voevodsky's \textbf{Homotopy Type Theory} (HoTT) \cite{Voevodsky2013}, where the \textbf{identity} of two inhabitants in a type is seen as a homotopy \textbf{path}.  HoTT may be relevant to AGI if we want the convenience of having multiple identical proofs of the same propositions -- this may help simplify the topology of types (ie. spatial regions representing propositions).  For example in Fig. \ref{fig:dependent-type}A, two disjoint regions can be connected by a path.
+Seeing logical types as topological spaces is also the origin of Voevodsky's \textbf{Homotopy Type Theory} (HoTT) \cite{Voevodsky2013}, where the \textbf{identity} of two inhabitants in a type is seen as a homotopy \textbf{path}.  HoTT may be relevant to AGI if we want the convenience of having multiple identical proofs of the same propositions -- this may help simplify the topology of types (ie. spatial regions representing propositions).  For example in Fig. \ref{fig:dependent-type}A, two disjoint regions can be connected by a path, even though $x_1$ and $x_2$ are ``identical'' points.
 
 \begin{figure}[h]
 \centering
@@ -181,9 +181,9 @@ Seeing logical types as topological spaces is also the origin of Voevodsky's \te
 
 \subsection{Neuro-Symbolic Integration}
 
-There has been a long history of attempts to integrate symbolic logic with neural processing, with pioneers such as Ron Sun, Dov Gabbay, Barbara Hammer, among others.  We consider two \textbf{model-based} approaches below.
+There has been a long history of attempts to integrate symbolic logic with neural processing, with pioneers such as Ron Sun, Dov Gabbay, Barbara Hammer, among others.  We describe two \textbf{model-based} approaches below.
 
-From a categorical perspective, model theory is a \textbf{functor} mapping logic syntax to algebraic objects and operations between them (hence the name ``functorial semantics''):
+From a categorical perspective, model theory is a \textbf{functor} mapping logic syntax to algebraic objects \textit{and} the operations between them (hence the name ``functorial semantics''):
 
 \begin{equation}
 \boxed{\mbox{syntax}} \quad
@@ -196,7 +196,7 @@ From a categorical perspective, model theory is a \textbf{functor} mapping logic
 \end{tikzpicture}
 \end{equation}
 
-Model theory is interesting when the target structure has additional properties not specified by the logic syntax.  For example, the predicate \texttt{male(x)} may be modelled by:
+Model theory is interesting when the target structure has additional properties beyond those specified by the logic syntax.  For example, the predicate \texttt{male(x)} may be modelled by:
 \begin{equation}
 \label{table:modelling-schemes}
 \begin{tabular}{|c|c|c|} \hline
@@ -206,11 +206,11 @@ topology & \texttt{male}(x) $ \Leftrightarrow x \in S $ & $S$ is an open set \\
 \hline
 \end{tabular}
 \end{equation}
-Model-based methods may appear impractical for AGI because the number of grounded atomic propositions is too large (potentially infinite, if we include also propositions that are imagined).  However, if all possible atoms are embedded in a mathematical space through mapping schemes such as the above (\ref{table:modelling-schemes}), it may be approximately feasible.
+Model-based methods may appear impractical for AGI because the number of grounded atomic propositions gets too large (potentially infinite, if we include also propositions that are imagined).  However, if all possible atoms are embedded in a mathematical space through mapping schemes such as the above (\ref{table:modelling-schemes}), it may be approximately feasible.
 
-In the \textbf{type-theoretic} or ``syntactic'' approach  (including the one in this paper), propositions (= types) are regions in some vector space.  Currently our simple scheme is to map predicates like $P(a,b)$ into the Cartesian product $\logical{Pred} \times \logical{Obj} \times \logical{Obj}$ where $\logical{Pred}$ is the space of all possible predicates and $\logical{Obj}$ the space of all possible objects \footnote{Here objects mean logical or first-order objects, not categorical objects} (but this is not the only option; see \S\ref{sec:dependent-types}).  \textbf{Inference} is performed by a neural network simulating the single-step consequence operator $\vdash$, while \textbf{learning} is through changing of network weights.  This is relatively simple and straightforward.
+In the ``\textbf{syntactic}'' or type-theoretic approach  (including the one in this paper), propositions (= types) are regions in some vector space.  Currently our simple scheme is to map predicates like $P(a,b)$ into the Cartesian product $\logical{Pred} \times \logical{Obj} \times \logical{Obj}$ where $\logical{Pred}$ is the space of all possible predicates and $\logical{Obj}$ the space of all possible objects \footnote{Here objects mean logical or first-order objects, not categorical objects} (but this is not the only option; see \S\ref{sec:dependent-types}).  \textbf{Inference} is performed by a neural network simulating the single-step consequence operator $\vdash$, while \textbf{learning} is through changing of network weights.  This is relatively simple and straightforward.
 
-Whereas, in the \textbf{model-theoretic} approach one places objects in a high-dimensional space such that their positions satisfy the constraints imposed by various predicates (eg. polynomials, matrices, open sets, ...)  Now \textbf{inference} occurs as the system pays \textit{attention} to some points in an $\logical{Object}$ space, which points are covered by some predicates, thus forming propositions, leading to awareness of new propositions, ... and so on.  It is interesting that, under this scheme, it seems as if all truths are known \textit{a priori}, and the system just needs to pay attention to them.  \textbf{Learning} changes the geometric shapes of predicates and thus forms new truths to be discovered by the system.
+Whereas, in the \textbf{model-theoretic} approach one places objects in a high-dimensional space such that their positions satisfy the constraints imposed by various predicates (eg. polynomials, matrices, open sets, ...)  Now forward \textbf{inference} occurs as the system pays \textit{attention} to (ie. to be simply aware of) some points in an $\logical{Object}$ space, which points are covered by some predicates.  Thus a new proposition is discovered, adding to more new conclusions, ... and so on.  It is interesting that, under this scheme, it seems as if all truths are known \textit{a priori}, and the system just needs to discover or ``attend'' to them.  \textbf{Learning} changes the geometric shapes of predicates and forms new truths to be discovered by the system.
 
 \begin{enumerate}
 	\item In Pascal Hitzler and Anthony Seda's \textbf{Core Method} \cite{Hitzler2011}, an \textbf{interpretation} $\mathcal{I}$ is a function that assigns truth values to the set of all possible ground atoms in a logic language $\mathcal{L}$.  One can see $\mathcal{I}$ as an enumeration of ground atoms that are true, and thus it provides a model to interpret any logic formula in $\mathcal{L}$.  Moreover $\mathcal{I}$ is a function from the space $X$ of atoms to $\mathbf{2} = \{ \top, \bot \}$ and can be given a topology $\mathbf{2}^X$ which is $X$ copies of the discrete topology of $\mathbf{2}$.  Such a topology makes $\mathcal{I}$ homeomorphic to the \textbf{Cantor set} in $[0,1]$. To a logic program $P$ is associated a \textbf{semantic operator} $\mathcal{T}_P : \mathcal{I} \rightarrow \mathcal{I}$, performing a single step of forward \textbf{inference}.  Finally, the space of interpretations $\mathcal{I}$ is embedded into $\mathbb{R}$ using a ``level mapping'' (The level of an atom increases by each inference step;  All the atoms of an interpretation $\mathcal{I}$ are translated into a fractional number in base $b$).  This allows $\mathcal{T}_P$ to be approximated by a neural network $f: \mathcal{I} \rightarrow \mathbb{R}$.  \\
@@ -226,9 +226,11 @@ We would also like to mention Geoffrey Hinton's recent \textbf{GLOM theory} \cit
 
 \subsection{Cognitive Architectures and Reinforcement Learning}
 
-\textbf{Reinforcement Learning (RL).}  In the 1980's, Richard Sutton \cite{Sutton1984} introduced reinforcement learning as an AI paradigm, drawing inspiration from Control Theory and Dynamic Programming.  In retrospect, RL already has sufficient generality to be considered an AGI theory, or at least as a top-level framework for describing AGI architectures.
+When we mention ``AGI'' here, it is intended to focus on a minimal core subset of its requirements, namely the ability to make logically correct inferences based on distilled knowledge learned from massive world-data.  The strategy is that other modules of an AGI may be built upon this base.
 
-\textbf{Relation to AIXI.}  AIXI is an abstract AGI model introduced by Marcus Hutter in 2000 \cite{Hutter2005}.  AIXI's environmental setting is the external ``world'' as observed by some sensors.  The agent's internal model is a universal Turing machine (UTM), and the optimal action is chosen by maximizing potential rewards over all programs of the UTM.  In our (minimal) model, the UTM is \textit{constrained} to be a neural network, where the NN's \textbf{state} is analogous to the UTM's \textbf{tape}, and the optimal weights (program) are found via Bellman optimality.
+\textbf{Reinforcement Learning (RL).}  In the 1980's, Richard Sutton \cite{Sutton1984} introduced reinforcement learning as an AI paradigm, drawing inspiration from Control Theory and Dynamic Programming.  In retrospect, RL already has sufficient generality to be considered an AGI theory, or at least as a top-level framework for describing AGI architectures \footnote{ Indeed, Sutton argues that merely increasing brute-force computing power would lead to AGI and that human design of algorithms is relatively useless.  The tenet in this paper is that logic may serve as an inductive bias to accelerate learning, but we cannot be certain about this, since the algorithmic search for AGI is non-exhaustive (see \S\ref{sec:no-free-lunch}). }.
+
+\textbf{Relation to AIXI.}  AIXI is an abstract AGI model introduced by Marcus Hutter in 2000 \cite{Hutter2005}.  AIXI's environmental setting is the external ``world'' as observed by some sensors.  The agent's internal model is a universal Turing machine (UTM), and the (approximately) optimal action is chosen by maximizing potential rewards over all programs of the UTM.  In our (minimal) model, the UTM is \textit{constrained} to be a neural network, where the NN's \textbf{state} is analogous to the UTM's \textbf{tape}, and the optimal weights (program) are found via Bellman optimality.
 
 \textbf{Relation to Quantum mechanics and Path Integrals.}  At the core of RL is the Bellman equation, which governs the update of the utility function to reach its optimal value.  This equation (in discrete time) is equivalent to the Hamilton-Jacobi equation in differential form.  Nowadays they are unified as the Hamilton-Jacobi-Bellman equation, under the name ``optimal control theory'' \cite{Liberzon2012}.  In turn, the Hamilton-Jacobi equation is closely related to the Schr\"{o}dinger equation in quantum mechanics:
 \begin{equation}
@@ -262,7 +264,7 @@ So far, we did not make use of dependent types:  predicates are represented usin
 
 %An immediate question is:  what kind of structure does dependent type theory impose on the inference operator $\vdash$, and thus our neural network?  The answer is surprising:  almost none.  Curry-Howard isomorphism merely tells us the types (ie. spaces) in which elements reside, but it does not constrain the functions mapping between such spaces.
 
-The expressiveness of predicate logic (in one form or another) is a highly desirable feature for AGI knowledge representations.  So it seems necessary to incorporate dependent type theory into our logic.  From a categorical perspective, predicates can be regarded as \textbf{fibers} over a base set.  Fibrations capture the structure of \textbf{indexing} and \textbf{substitutions} (as shown in Fig. \ref{fig:dependent-type}B).  This figure is key to understanding Bart Jacob's book \cite{Jacobs1999}.  Thus category theory gives us more insight into the (predicate) structure of logic, though it is as yet unclear how to make use of this particular idea.
+The expressiveness of predicate logic (in one form or another) is a highly desirable feature for AGI knowledge representations.  So it seems necessary to incorporate dependent type theory into our logic.  From a categorical perspective, predicates can be regarded as \textbf{fibers} over a base set.  Fibrations capture the structure of \textbf{indexing} and \textbf{substitutions}, as shown in Fig. \ref{fig:dependent-type}B.  This figure is key to understanding Bart Jacob's book \cite{Jacobs1999}.  Thus category theory gives us more insight into the (predicate) structure of logic, though it is as yet unclear how to make use of this particular idea.
 %\begin{equation}
 %\label{eqn:2-levels-of-TT}
 %\vcenter{\hbox{\includegraphics[scale=0.5]{../2020/why-Martin-Lof.png}}}
@@ -319,7 +321,7 @@ Their paper specialized the theorem to the case that every symmetric multivariat
 \label{symmetric-functions}
 f(x_1, ..., x_n) = \rho(\; \phi(x_1) + ... + \phi(x_n) \;)
 \end{equation}
-This leads to the implementation using neural networks as in Fig. \ref{fig:symmetric}A.
+This leads to the implementation using neural networks as in Fig. \ref{fig:symmetric}A, and can be easily implemented with just a few lines of Tensorflow, see \S\ref{sec:experiment}.
 
 \begin{figure}
 	\centering
@@ -328,48 +330,52 @@ This leads to the implementation using neural networks as in Fig. \ref{fig:symme
 	\label{fig:symmetric}
 \end{figure}
 
-And this can be easily implemented with just a few lines of Tensorflow, see \S\ref{sec:experiment}.  The idea of using symmetric neural networks to process logical / relational data has already been explored by one of Google's research teams in 2017, which they called RN (Relational Networks) \cite{Santoro2017} \cite{Battaglia2018}.  Their results further confirm the viability of this idea.
+The idea of using symmetric neural networks to process logical / relational data has already been explored by one of Google's research teams in 2017, which they called RN (Relational Networks) \cite{Santoro2017} \cite{Battaglia2018}.  Their results further confirm the viability of this idea.
 
 \subsection{Why BERT is a Logic}
 
-BERT (and its variants) are based on the Transformer architecture \cite{Devlin2018}, and Transformers are based solely on the Self-Attention mechanism \cite{Vaswani2017}.  In Fig. \ref{fig:self-attention} one can verify that the Transformer is permutation-invariant (or more precisely, \textbf{equivariant}).  That is to say, for example, if input \#1 and \#2 are swapped, then output \#1 and \#2 would also be swapped.
+BERT (and its variants) are based on the Transformer architecture \cite{Devlin2018}, and Transformers are based solely on the Self-Attention mechanism \cite{Vaswani2017}.  In Fig. \ref{fig:self-attention} one can verify that the Transformer is \textbf{equivariant} to its inputs.  That is to say, for example, if input \#1 and \#2 are swapped, then output \#1 and \#2 would also be swapped.
 
 \begin{figure}[h]
-	\centering
-	\includegraphics[scale=0.25]{self-attention.png}
-	\caption{Flow of operations in self-attention.  From blog article: Illustrated: Self-Attention	-- Step-by-step guide to self-attention with illustrations and code https://towardsdatascience.com/illustrated-self-attention-2d627e33b20a }
+	\includegraphics[scale=0.2]{self-attention.png}
+	\caption{Flow of operations in Self-Attention.  From blog article: Illustrated: Self-Attention	-- Step-by-step guide to self-attention with illustrations and code https://towardsdatascience.com/illustrated-self-attention-2d627e33b20a }
 	\label{fig:self-attention}
 \end{figure}
 
 In other words, each Transformer layer takes $N$ inputs and produces $N$ equivariant outputs.  That is the same as saying that \textit{each} output is permutation-invariant in all its inputs.  As we explained in the last section, permutation invariance is the symmetry that characterizes a logic as having \textit{individual} propositions.
 
-\textbf{Proof that equi-variance $\Leftrightarrow$ symmetric} (for an $N$-input $N$-output set function): $\Leftarrow$: Suppose we have constructed $n$ symmetric functions $f_1, ..., f_N$, satisfying $\forall \sigma. \; \vec{f}(\vec{x}) = \vec{f}(\sigma \vec{x})$, with $\sigma$ taking values in the symmetric group $\mathfrak{S}_N$.  We can re-state the condition as $\forall \sigma. \; \sigma \vec{f}(\vec{x}) = \vec{f}(\sigma \vec{x})$ by re-naming the functions, because $\{ f_i \}$ is a set.  $\Rightarrow$: If we have $N$ equi-variant functions $t_1, ..., t_N$, satisfying $\forall \sigma. \; \sigma \vec{t}(\vec{x}) = \vec{t}(\sigma \vec{x})$, we can also re-state the condition as $\forall \sigma. \; \sigma^{-1} \sigma \; \vec{t}(\vec{x}) = \vec{t}(\sigma \vec{x})$ by re-naming elements in the set $\{ t_i \}. \quad \blacksquare$
+\textbf{Proof that equi-variance $\Leftrightarrow$ symmetric} (for an $N$-input $N$-output set function): $\Leftarrow$: Suppose we have constructed $n$ symmetric functions $f_1, ..., f_N$, satisfying $\forall \sigma. \; \vec{f}(\vec{x}) = \vec{f}(\sigma \vec{x})$, with $\sigma$ taking values in the symmetric group $\mathfrak{S}_N$.  We can re-state the condition as $\forall \sigma. \; \sigma \vec{f}(\vec{x}) = \vec{f}(\sigma \vec{x})$ by re-naming the functions, because $\{ f_i \}$ is a set.  $\Rightarrow$: If we have $N$ equi-variant functions $t_1, ..., t_N$, satisfying $\forall \sigma. \; \sigma \vec{t}(\vec{x}) = \vec{t}(\sigma \vec{x})$, we can also re-state the condition as $\forall \sigma. \; \sigma^{-1} \sigma \; \vec{t}(\vec{x}) = \vec{t}(\sigma \vec{x})$ by re-naming elements in the set $\{ t_i \}.$ This is illustrated in Fig. \ref{fig:symmetric}B (for $N = 3$). $\quad \blacksquare$
 
-This is illustrated in Fig. \ref{fig:symmetric}B (for $N = 3$).
-
-A self-Attention layer can be implemented by this formula (which appears in numerous tutorials):
+A Self-Attention layer can be implemented by this formula (which appears in numerous tutorials):
 \begin{equation}
 \label{eqn:self-attention}
-Z = \sum \mathrm{softmax}(\frac{1}{\sqrt{d_k}} Q \cdot K^T) V
+Z = \sum \mathrm{softmax}(\frac{1}{\sqrt{d_k}} Q_i \cdot K_j^T) V_j
 \end{equation}
-where $Q. K, V$ are \textit{linear} transformations of the inputs $X_i$ by multiplying (learned) matrices $W^Q, W^K, W^V$ respectively.  We hypothesize that (\ref{eqn:self-attention}) is just a \textit{general} form of equivariant functions, ie, it represents an arbitrary non-linear transformation of the input vectors $X_i$ to the output vector $Z$, without any constraints other than equivariance.
+where \textbf{Q}uery, \textbf{K}ey, and \textbf{V}alue are \textit{linear} transformations of the inputs $X_i$ by multiplying (learned) matrices $W^Q, W^K, W^V$ respectively.  We hypothesize that (\ref{eqn:self-attention}) is just a \textit{general} form of equivariant functions, ie, it represents an arbitrary non-linear transformation of the input vectors $X_i$ to the output vector $Z$, without any constraints other than equivariance.
 
 \begin{figure}[h]
 \centering
 \includegraphics[scale=0.5]{embedding.png}
-\caption{\circA Why positional encoding does not interfere with word embedding. \circB How a logic term ``Socrates'' is copied from one position to another. \circC How predicates may be formed in self-attention. \circD Deformation of embedding spaces.}
+\caption{\circA Why Positional Encoding does not interfere with Word Embeddings. \circB How a logic term ``Socrates'' is copied from one position to another. \circC How predicates may be formed in Self-Attention. \circD Non-linear deformation of embedding spaces.}
 \label{fig:embedding}
 \end{figure}
 
-Fig. \ref{fig:embedding}C is a simplified view of a single self-Attention layer.  The output is a new proposition that depends on the input objects, and thus, functions as a \textbf{predicate}.  However, this representation of predicates-within-proposition is not efficient for logic inference.  We may visualize the non-linear (due to the softmax in $Z$) deformation of the input and output vector-embedding spaces as in Fig. \ref{fig:embedding}D.
+Fig. \ref{fig:embedding}C is a simplified view of a single Self-Attention layer.  The output is a new proposition that depends on the input objects, and thus, functions as a \textbf{predicate}.  However, this representation of predicates-within-proposition is not efficient for logic inference.  We may visualize the non-linear (due to the softmax in $Z$) deformation of the input and output vector-embedding spaces as in Fig. \ref{fig:embedding}D.
 
-The problem is that a \textbf{universally quantified} formula such as $\forall x. P(x) \Rightarrow Q(x)$ requires mapping a source region to a target region in embedding spaces.  This kind of mapping shapes are difficult or slow to learn because it requires many pairs of input-output data points.  But BERT/GPT is famous for being able to make \textbf{few-shot generalizations}.  Thus we conjecture that in BERT/GPT the logical proposition is not just one equivariant unit but is \textbf{decomposed} into several units (eg. ``I love you'' at the input stage is decomposed into 3 vector units: ``I'', ``love'', and ``you'').  In other words, BERT/GPT performs logic inference / derivations on the \textbf{syntactic} level, ie, via \textbf{symbolic} manipulations.
+The problem is that a \textbf{universally quantified} formula such as $\forall x. P(x) \Rightarrow Q(x)$ requires mapping a source region to a target region in embedding spaces.  This kind of mapping shapes are difficult or slow to learn because it requires many pairs of input-output data points.  But BERT/GPT is famous for being able to make \textbf{few-shot generalizations}.  Thus we conjecture that in BERT/GPT the logical proposition is not just one equivariant unit but is \textbf{decomposed} into several units (eg. ``I love you'' at the input stage is decomposed into 3 vector units: ``I'', ``love'', and ``you'').  In other words, BERT/GPT performs logic inference / derivations on the \textbf{syntactic} level, ie, via \textbf{symbolic manipulations}.
+
+Fig. \ref{fig:embedding}B is an example of such an operation.  The object ``Socrates'' is copied from one position to another.  By looking at equation (\ref{eqn:self-attention}) we surmise that BERT is capable of such manoeuvres, with appropriately learned Keys and Values.
+
+Fig. \ref{fig:embedding}A tries to explain why Positional Encodings (the sine wave patterns) seem not to interfere with Word Embeddings, when the embedding dimension is sufficiently large.  Note that the x-axis here is not a single dimension but many dimensions, and the sine waves are not ordinary waves but waves \textit{over dimensions}.  As each wave only occludes 50\% of the dimensions, the word embeddings of ``love'' and ``death'' are still recognizable.  This enables to mix multiple meanings in a single word vector, eg. ``love'' + ``you'' = ``love you''.  So a predicate vector may contain its own objects, as in Fig. \ref{fig:embedding}C.
+
+So far it seems the representation in BERT/GPT may have predicates with objects inside a single vector or with predicates and objects residing in separate vectors.  Perhaps inspecting the weights inside BERT/GPT may reveal their internal representations.
 
 In \textbf{Multi-Head Attention}, the intermediate computations are duplicated multiple (eg, $M = 8$) times, each with their own weight matrices.  From the logic point of view, this amounts to duplicating $M$ logic rules per output.  But since the next layer still expects $N$ inputs, the $M$ outputs are combined into one, before the next stage.  Thus, from the logic point of view this merely increased the parameters \textit{within} a single logic rule, and seems not significant to increase the power of the logic rule-base.  Indeed, experimental results seem to confirm that multi-head attention is not particularly gainful towards performance.
 
 A comment is in order here, about the choice of the word ``head''.  In logic programming (eg Prolog), one calls the conclusion of a logic rule its ``head'', such as \texttt{P} in \texttt{P :- Q,R,S}.  Perhaps the creators of BERT might have logic rules in mind?
 
 \section{``No Free Lunch'' Theory}
+\label{sec:no-free-lunch}
 
 In machine learning, ``No Free Lunch'' \cite{Wolpert1997} \cite{Alpaydin2020} refers to the fact that accelerating the search for a solution by ignoring one part of the search space (known as ''inductive bias'' \cite{Alpaydin2020}) is just as good as ignoring another part, if the solutions are believed to be evenly distributed in those regions.  For example, the symmetry proposed here reduces the search space by a factor of $1/n!$ where $n$ is the number of propositions in working memory.
 
@@ -399,7 +405,7 @@ In our Tic-Tac-Toe experiment, learning led to initial improvements in game play
 
 \begin{figure}[h]
 \centering
-\includegraphics[scale=0.5]{comparison.png}
+\includegraphics[scale=0.4]{comparison.png}
 \caption{Symmetric vs. fully-connected neural network for Tic Tac Toe}
 \label{fig:comparison}
 \end{figure}
